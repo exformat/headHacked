@@ -22,7 +22,7 @@ public class Main {
         String crypt = getCrypt.getCrypt();
 
         try(FileWriter writer = new FileWriter(
-                "/home/exformat/IdeaProjects/headHacked/src/crypt.txt", false)) {
+                "/home/exformat/IdeaProjects/headHacked/src/crypt.txt", true)) {
             writer.write("построчная запись: " + key.getKey() + " " + name.getName() + " " + crypt + "\n");
 
            /* writer.write("посимвольная запись: ");

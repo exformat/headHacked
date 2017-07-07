@@ -25,9 +25,33 @@ class Crypt {
          mix_crypt();
          this.endCrypt.setCrypt(this.mix_crypt);
     }
+
+    private void alt_first_crypt(){
+
+        int key = getKey.getKey();
+        String message = getMessage.getName();
+
+        String key_string = Integer.toString(key);
+        System.out.println(key_string);
+
+        //write key in array
+        int[] key_array = new int[8];
+        for (int i = 0; i < key_string.length() ;i++){
+            int count = Character.getNumericValue(key_string.charAt(i));
+            key_array[i] = count;
+        }
+
+        for (int i = 0; i < message.length(); i++){
+
+        }
+
+    }
     private void first_crypt(){
 
-         String key_string = Integer.toString(getKey.getKey());
+        int key = getKey.getKey();
+        String message = getMessage.getName();
+
+         String key_string = Integer.toString(key);
         System.out.println(key_string);
 
          //write key in array
@@ -44,13 +68,14 @@ class Crypt {
          //оcновной цикл с колличеством итераций
          if (rotate){
 
+             System.out.println("true");
              String end_crypt  = "";
 
              for (int iteration = 0; iteration < key_array[0]; iteration++){
 
                  //вложенный цикл. поэлементная обработка
-                 for (int elem = 0; elem < getMessage.getName().length(); elem++){
-                     char element = getMessage.getName().charAt(elem);
+                 for (int elem = 0; elem < message.length(); elem++){
+                     char element = message.charAt(elem);
 
                      //вложенный цикл. Обработка элемента по колличеству знаков в ключе
                      for (int count = 0; count < key_array.length; count++){
@@ -70,13 +95,14 @@ class Crypt {
          }
          else {
 
+             System.out.println("false");
              String end_crypt  = "";
 
              for (int iteration = 0; iteration < key_array[0]; iteration++){
 
                  //вложенный цикл. поэлементная обработка
-                 for (int elem = 0; elem < getMessage.getName().length(); elem++){
-                     char element = getMessage.getName().charAt(elem);
+                 for (int elem = 0; elem < message.length(); elem++){
+                     char element = message.charAt(elem);
 
                      //вложенный цикл. Обработка элемента по колличеству знаков в ключе
                      for (int count = 0; count < key_array.length; count++){
@@ -99,7 +125,7 @@ class Crypt {
 
         for (int i = 0; i < this.end_first_crypt.length(); i++){
             char element = this.end_first_crypt.charAt(i);
-            char random_char = (char) Math.round(Math.random() * 1000);
+            char random_char = (char) Math.round(Math.random() * 256);
             this.double_crypt = this.double_crypt + element + random_char;
         }
         System.out.println("Удвоение строки случайными символами: " + double_crypt);
