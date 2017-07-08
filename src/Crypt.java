@@ -20,7 +20,7 @@ class Crypt {
          System.out.println("оригинальное сообщение: " + message);
          System.out.println("ключ: " + key);
 
-         first_crypt();
+         alt_first_crypt();
          double_crypt();
          mix_crypt();
          this.endCrypt.setCrypt(this.mix_crypt);
@@ -41,11 +41,31 @@ class Crypt {
             key_array[i] = count;
         }
 
-        for (int i = 0; i < message.length(); i++){
-
-        }
-
+		int count = 0;
+		String tmp = "";
+        for (int i = 0; i <= message.length(); i++){
+			char element = message.charAt(i);
+			element = (char) element + key_array[count];
+			tmp = tmp + element;
+			count++;
+			if(count == key_array.size()-1){
+				count = 0;
+        	}
+			if(i != message.length(){
+				element = message.charAt(i + 1);
+				element = (char) element - key_array[count + 1];
+				tmp = tmp + element;
+				i++;
+				if(count == key_array.size(-1){
+					count = 0;
+				}
+			}
+		}
+		this.end_first_crypt = tmp;
+		System.out.println("result alt crypt " + tmp);
+		tmp = "";
     }
+	
     private void first_crypt(){
 
         int key = getKey.getKey();
