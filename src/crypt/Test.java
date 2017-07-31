@@ -18,7 +18,7 @@ public class Test {
 
         String a = "a";
 
-        for (int i = 0; i < 10000; i++){
+        for (int i = 0; i < 10; i++){
             System.out.println("loop №: " + (i + 1) + "============================");
             message.setMessage(a);
             crypt.crypt();
@@ -33,17 +33,20 @@ public class Test {
         Date date = new Date();
 
         String a = "a";
-        for (int i = 0; i < 10000; i++){
+        for (int i = 0; i < 10; i++){
             a += "a";
         }
         long d = date.getTime();
         System.out.println(d);
+		
         message.setMessage(a);
         crypt.crypt();
         deCrypt.deCrypt();
+		
         Date date1 = new Date();
         long d2 = date1.getTime();
         System.out.println(d2);
+		
         long dEnd = d2 - d;
         System.out.println(dEnd);
     }
