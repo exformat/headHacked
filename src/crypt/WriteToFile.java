@@ -9,7 +9,6 @@ import java.io.IOException;
 class WriteToFile {
 
     private EndCrypt endcrypt = new EndCrypt();
-    private Name name = new Name();
     private Key key = new Key();
 
     void write() {
@@ -17,11 +16,10 @@ class WriteToFile {
         String crypt = this.endcrypt.getCrypt();
         this.endcrypt.setCrypt("");
 
-        String adress = "/home/exformat/IdeaProjects/headHacked/src/res/";
-        String txt = ".txt";
+        String adress = "/home/exformat/IdeaProjects/headHacked/src/res/history";
 
         try (FileWriter writer = new FileWriter(
-                adress + this.name.getName() + txt, false)) {
+                adress, false)) {
 
             writer.write(this.key.getKey() + crypt);
 

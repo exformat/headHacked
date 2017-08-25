@@ -5,59 +5,51 @@ package DeCrypt;
  */
 public class DeCrypt {
 
-    private ReadFile readFile = new ReadFile();
-    private Key getKey = new Key();
-    private CryptMessage cryptMessage = new CryptMessage();
+    public String deCrypt(String key, String message){
 
-    private String deMixMessage = "";
-    private String deDoubleMessage = "";
-    private String deCryptMessage = "";
+        String tmp;
 
-        public void deCrypt(){
-            this.readFile.read();
-            deMix();
-            deDouble();
-            deCrypt_1();
-            deCrypt_2();
+        tmp = deMix(message);
+
+        tmp = deDouble(tmp);
+
+        tmp = deCrypt_1(key, tmp);
+
+        tmp = deCrypt_2(key, tmp);
+
+        return tmp;
+    }
+    private String deMix(String message){
+
+        StringBuilder dMix = new StringBuilder();
+        StringBuilder dMix2 = new StringBuilder();
+
+        for (int i = 0; i < message.length(); i++){
+            dMix.append(message.charAt(i));
+            i++;
+            dMix2.append(message.charAt(i));
         }
-    private void deMix(){
 
-            String message = cryptMessage.getCryptMessage();
-
-            String dMix = "";
-            String dMix2 = "";
-
-            for (int i = 0; i < message.length(); i++){
-                dMix += message.charAt(i);
-                i++;
-                dMix2 += message.charAt(i);
-            }
-            this.deMixMessage = dMix2 + dMix;
-
-        System.out.println("demix message " + this.deMixMessage);
+        message = dMix2.append(dMix).toString();
+        return message;
     }
 
-    private void deDouble(){
+    private String deDouble(String message){
 
-            String message = cryptMessage.getCryptMessage();
-            char element;
-            String tmp = "";
+        char element;
+        StringBuilder tmp = new StringBuilder();
 
-            for(int i = 0; i < message.length(); i++){
-                element = this.deMixMessage.charAt(i);
-                tmp += element;
-                i++;
-            }
-
-            this.deDoubleMessage = tmp;
-        System.out.println("dedouble message " + this.deDoubleMessage);
+        for(int i = 0; i < message.length(); i++){
+            element = message.charAt(i);
+            tmp.append(element);
+            i++;
         }
+        return tmp.toString();
+    }
 
-    private void deCrypt_1(){
+    private String deCrypt_1(String key, String message){
 
-        String key = getKey.getKey();
-
-        int[] keyArray = new int[8];
+        int[] keyArray = new int[key.length()];
             for (int i = 0; i < key.length() ;i++){
                 int count = Character.getNumericValue(key.charAt(i));
                 keyArray[i] = count;
@@ -66,14 +58,14 @@ public class DeCrypt {
             boolean rotate = keyArray[1] % 2 != 0;
 
             if(rotate){
-                String endCrypt  = "";
+                StringBuilder endCrypt  = new StringBuilder();
 
                 for (int iteration = 0; iteration < keyArray[0]; iteration++){
 
 //вложенный цикл. поэлементная обработка
-                    for (int elem = 0; elem < this.deDoubleMessage.length(); elem++){
+                    for (int elem = 0; elem < message.length(); elem++){
 
-                        char element = this.deDoubleMessage.charAt(elem);
+                        char element = message.charAt(elem);
 
 //вложенный цикл. Обработка элемента по колличеству знаков в ключе
                         for (int count = 0; count < keyArray.length; count++){
@@ -84,22 +76,22 @@ public class DeCrypt {
                             element = (char) (element -  keyArray[count]);
                             count++;
                         }
-                        endCrypt += element;
+                        endCrypt.append(element);
                     }
-                    this.deCryptMessage = endCrypt;
-                    endCrypt = "";
+                    message = endCrypt.toString();
+                    endCrypt = new StringBuilder();
                 }
             }
             else {
 
-                String endCrypt  = "";
+                StringBuilder endCrypt  = new StringBuilder();
 
                 for (int iteration = 0; iteration < keyArray[0]; iteration++){
 
 //вложенный цикл. поэлементная обработка
-                    for (int elem = 0; elem < this.deDoubleMessage.length(); elem++){
+                    for (int elem = 0; elem < message.length(); elem++){
 
-                        char element = this.deDoubleMessage.charAt(elem);
+                        char element = message.charAt(elem);
 
 //вложенный цикл. Обработка элемента по колличеству знаков в ключе
                         for (int count = 0; count < keyArray.length; count++){
@@ -110,21 +102,18 @@ public class DeCrypt {
                             element = (char) (element +  keyArray[count]);
                             count++;
                         }
-                        endCrypt += element;
+                        endCrypt.append(element);
                     }
-                    this.deCryptMessage = endCrypt;
-                    endCrypt = "";
+                    message = endCrypt.toString();
+                    endCrypt = new StringBuilder();
                 }
-                System.out.println( "decrypt message " + this.deCryptMessage);
             }
+            return message;
         }
 
-    private void deCrypt_2(){
+    private String deCrypt_2(String key, String message){
 
-
-            String key = getKey.getKey();
-
-            int[] keyArray = new int[8];
+            int[] keyArray = new int[key.length()];
 
             for (int i = 0; i < key.length() ;i++){
                 int count = Character.getNumericValue(key.charAt(i));
@@ -132,30 +121,28 @@ public class DeCrypt {
             }
 
             int count = 0;
-            String tmp = "";
+            StringBuilder tmp = new StringBuilder();
 
-            for (int i = 0; i < this.deCryptMessage.length(); i++){
+            for (int i = 0; i < message.length(); i++){
 
-                char element = this.deCryptMessage.charAt(i);
+                char element = message.charAt(i);
                 element -= keyArray[count];
-                tmp += element;
+                tmp.append(element);
                 count++;
 
                 if(count == 7){
                     count = 0;
                 }
 
-                if (i != this.deCryptMessage.length() - 1) {
+                if (i != message.length() - 1) {
 
-                    element = this.deCryptMessage.charAt(i + 1);
+                    element = message.charAt(i + 1);
                     element += keyArray[count + 1]; //TODO fuuuUUUUck
-                    tmp += element;
+                    tmp.append(element);
                     i++;
                 }
             }
-
-        DecryptMessage.setEndCryptMessage(tmp);
-        System.out.println("end decrypt " + tmp);
+        return tmp.toString();
         }
     }
 

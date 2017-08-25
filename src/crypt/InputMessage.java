@@ -9,9 +9,9 @@ class InputMessage {
     private Message message = new Message();
 
     //ввод сообщения
-    /*void inputMessage() throws IOException {
+    void inputMessage() throws IOException {
         System.out.println("Введите кодируемое сообщение");
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         this.message.setMessage(reader.readLine());
-    }*/
+    }
 }
