@@ -4,10 +4,10 @@ class Key {
 
     private static int key;
 
-    public int getKey(){
+    int getKey(){
         return key;
     }
-    public void setKey(int key){
-        this.key = key;
+    void setKey(int key){
+        Key.key = key;
     }
 }

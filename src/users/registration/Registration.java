@@ -69,7 +69,7 @@ public class Registration {
                 // create new Folder.
                 File newFolder = new File(linc + "UserHistory/" + this.nickname);
                 if (!newFolder.mkdir()){
-                    LOG.info("create directories" + newFolder);
+                    LOG.info("cannot create directories" + newFolder);
                 }
 
 

@@ -9,6 +9,7 @@ public class User {
     private String nickname;
     private String password;
 
+
     public User(int id, String nickName, String password) {
         this.id = id;
         this.nickname = nickName;

@@ -1,10 +1,10 @@
 package crypt;
 
-class Name {
+public class Name {
 
     private static String  name;
 
-    public String getName(){
+    String getName(){
         return this.name;
     }
 

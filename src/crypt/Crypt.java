@@ -1,89 +1,69 @@
 package crypt;
 
-import java.io.IOException;
-
 public class Crypt {
 
+    public String crypt(String key, String message){
 
-    private Logic logic = new Logic();
-    private Name name = new Name();
-    private Key key = new Key();
-    private Message message = new Message();
-    private EndCrypt endCrypt = new EndCrypt();
-    private InputMessage inMessage = new InputMessage();
-    private WriteToFile writeToFile = new WriteToFile();
+        String tmp;
 
-    private String end_first_crypt;
-    private String double_crypt = "";
+        tmp = crypt_1(key, message);
 
-    public void crypt() throws IOException {
-        this.logic.randomName();
-        /*try {
-            this.inMessage.inputMessage();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
+        tmp = crypt_2(key, tmp);
 
-        int key = this.key.getKey();
-        String name = this.name.getName();
+        tmp = doubleCrypt(tmp);
+
+        tmp = mixCrypt(tmp);
 
 
-        System.out.println( name + " пишет: " + "(" + key + ")" + this.message.getMessage());
 
-        generalCrypt();
-        first_crypt();
-        double_crypt();
-        mix_crypt();
-        this.writeToFile.write();
+        return tmp;
     }
-    private void generalCrypt(){
 
-        int key = this.key.getKey();
-        String message = this.message.getMessage();
 
-        String key_string = Integer.toString(key);
+    private String crypt_1(String key, String message){
+
 
         //write key in array
-        int[] key_array = new int[key_string.length()];
-        for (int i = 0; i < key_string.length() ;i++){
-            int count = Character.getNumericValue(key_string.charAt(i));
+        int[] key_array = new int[key.length()];
+        for (int i = 0; i < key.length() ;i++){
+            int count = Character.getNumericValue(key.charAt(i));
             key_array[i] = count;
         }
 
 		int count = 0;
-		String tmp = "";
+
+		StringBuilder tmp = new StringBuilder();
+
         for (int i = 0; i < message.length(); i++){
-			char element = message.charAt(i);
+
+            char element = message.charAt(i);
             element = (char) (element + key_array[count]);
-            tmp = tmp + element;
+            tmp.append(element);
 			count++;
-			if(count == key_string.length() - 1){
+
+			if(count == key.length() - 1){
 				count = 0;
         	}
 			if(i != message.length() - 1){
 				element = message.charAt(i + 1);
                 element = (char) (element - key_array[count + 1]);
-                tmp = tmp + element;
+                tmp.append(element);
 				i++;
-				if(count == key_string.length()){
+				if(count == key.length()){
 					count = 0;
 				}
 			}
 		}
-		this.end_first_crypt = tmp;
-		System.out.println("general crypt " + tmp);
+		return tmp.toString();
     }
-    private void first_crypt(){
 
-        int key = this.key.getKey();
-        String message = this.end_first_crypt;
+    private String crypt_2(String key, String message){
 
-        String key_string = Integer.toString(key);
 
          //write key in array
-         int[] key_array = new int[8];
-         for (int i = 0; i < key_string.length() ;i++){
-             int count = Character.getNumericValue(key_string.charAt(i));
+         int[] key_array = new int[key.length()];
+         for (int i = 0; i < key.length() ;i++){
+             int count = Character.getNumericValue(key.charAt(i));
              key_array[i] = count;
          }
 
@@ -94,7 +74,7 @@ public class Crypt {
          //оcновной цикл с колличеством итераций
          if (rotate){
 
-             String end_crypt  = "";
+             StringBuilder end_crypt  = new StringBuilder();
 
              for (int iteration = 0; iteration < key_array[0]; iteration++){
 
@@ -111,16 +91,15 @@ public class Crypt {
                          element = (char) (element +  key_array[count]);
                          count++;
                      }
-                     end_crypt = end_crypt + element;
+                     end_crypt.append(element);
                  }
-                 this.end_first_crypt = end_crypt;
-                 end_crypt = "";
+                 message = end_crypt.toString();
+                 end_crypt = new StringBuilder();
              }
-             System.out.println("First crypt: " + this.end_first_crypt);
          }
          else {
 
-             String end_crypt  = "";
+             StringBuilder end_crypt  = new StringBuilder();
 
              for (int iteration = 0; iteration < key_array[0]; iteration++){
 
@@ -137,40 +116,55 @@ public class Crypt {
                          element = (char) (element -  key_array[count]);
                          count++;
                      }
-                     end_crypt = end_crypt + element;
+                     end_crypt.append(element);
                  }
-                 this.end_first_crypt = end_crypt;
-                 end_crypt = "";
+                 message = end_crypt.toString();
+                 end_crypt = new StringBuilder();
              }
-             System.out.println("First crypt: " + this.end_first_crypt);
          }
+         return message;
      }
-    private void double_crypt(){//удвоение строки случайными символами
 
-        String message = this.end_first_crypt;
-        this.end_first_crypt = "";
+    private String doubleCrypt(String message){
+        //удвоение строки случайными символами
+
+
+        StringBuilder tmp = new StringBuilder();
+        StringBuilder element = new StringBuilder();
+
         for (int i = 0; i < message.length(); i++){
-            char element = message.charAt(i);
+            element.append(message.charAt(i));
             char random_char = (char) Math.round(Math.random() * 256);
-            this.double_crypt = this.double_crypt + element + random_char;
+            tmp.append(element.append(random_char));
+            element = new StringBuilder();
         }
-        System.out.println("Удвоение строки случайными символами: " + double_crypt);
+        return tmp.toString();
     }
-    private void mix_crypt(){ //Перемешка символов
 
-        String mix_crypt = "";
-         int index = double_crypt.length() / 2;
-         for (int i = 0; i < double_crypt.length(); i++){
-             char element_1 = double_crypt.charAt(index);
-             char element_2 = double_crypt.charAt(i);
-             mix_crypt = mix_crypt + element_1 + element_2;
-             index++;
-             if (index == double_crypt.length()){
-                 break;
-             }
-         }
-        this.double_crypt = "";
-        this.endCrypt.setCrypt(mix_crypt);
-        System.out.println("после перемешки: " + mix_crypt);
+    private String mixCrypt(String message){ //Перемешка символов
+
+        StringBuilder mixCrypt = new StringBuilder();
+        StringBuilder element_1 = new StringBuilder();
+        StringBuilder element_2 = new StringBuilder();
+
+        int index = message.length() / 2;
+
+        for (int i = 0; i < message.length(); i++){
+
+            element_1.append(message.charAt(index));
+            element_2.append(message.charAt(i));
+
+            mixCrypt.append(element_1.append(element_2));
+
+            index++;
+
+            element_1 = new StringBuilder();
+            element_2 = new StringBuilder();
+
+            if (index == message.length()){
+                break;
+            }
+        }
+        return mixCrypt.toString();
      }
 }
